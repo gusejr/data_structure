@@ -37,23 +37,26 @@ void push_heap(long long card_number, Heap* cards)
 }
 long long del_heap(Heap* cards)
 {
-	long long min = cards->card_heap[1];
-	int size = 1;
-	while (size * 2 <cards->heap_size || size * 2 + 1 < cards->heap_size)
+	long long data = cards->card_heap[1];
+	long long temp = cards->card_heap[(cards->heap_size)--];
+	int parent = 1;
+	int child = 2;
+	while (child <= cards->heap_size)
 	{
-		if (cards->card_heap[size * 2] <= cards->card_heap[size * 2 + 1])
+		if (child < cards->heap_size && (cards->card_heap[child] > cards->card_heap[child + 1]))
 		{
-			cards->card_heap[size] = cards->card_heap[size * 2];
-			size = size * 2;
+			child++;
 		}
-		else
+		if (temp < cards->card_heap[child])
 		{
-			cards->card_heap[size] = cards->card_heap[size * 2 + 1];
-			size = size * 2 + 1;
+			break;
 		}
+		cards->card_heap[parent] = cards->card_heap[child];
+		parent = child;
+		child = child * 2;
 	}
-	--(cards->heap_size);
-	return min;
+	cards->card_heap[parent] = temp;
+	return data;
 }
 int main()
 {
@@ -66,7 +69,6 @@ int main()
 	{
 		scanf_s("%lld", &input);
 		push_heap(input, &cards);
-		//printf("%d", cards->cards[i]);
 	}
 	for (int i = 0; i < m; i++)
 	{
@@ -79,7 +81,6 @@ int main()
 	for (int i = 1; i <= n; i++)
 	{
 		sum = sum + cards.card_heap[i];
-		printf("%lld\n", cards.card_heap[i]);
 	}
 	printf("%lld", sum);
 }
