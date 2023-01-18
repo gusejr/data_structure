@@ -4,15 +4,15 @@
 typedef struct node
 {
 	int data;
-	struct node* left;
-	struct node* right;
+	struct node* lchild;
+	struct node* rchild;
 }node;
 void push(int push_num, node** root)  //삽입
 {
 	node* tra = *root;
 	node* newnode = (node*)malloc(sizeof(node));
-	newnode->left = NULL;
-	newnode->right = NULL;
+	newnode->lchild = NULL;
+	newnode->rchild = NULL;
 	newnode->data = push_num;
 	if (*root == NULL)
 	{
@@ -22,26 +22,26 @@ void push(int push_num, node** root)  //삽입
 	{
 		if (push_num > tra->data)  // 오른쪽 클때
 		{
-			if (tra->right == NULL)  //비어있음
+			if (tra->rchild == NULL)  //비어있음
 			{
-				tra->right = newnode;
+				tra->rchild = newnode;
 				return;
 			}
 			else
 			{
-				tra = tra->right;
+				tra = tra->rchild;
 			}
 		}
 		else if (push_num < tra->data)
 		{
-			if (tra->left == NULL)
+			if (tra->lchild == NULL)
 			{
-				tra->left = newnode;
+				tra->lchild = newnode;
 				return;
 			}
 			else
 			{
-				tra = tra->left;
+				tra = tra->lchild;
 			}
 		}
 		else // 같을 때
@@ -66,12 +66,12 @@ void del(int del_data, node** root)  // 삭제
 		else if (del_data > tra->data)  // 현재 노드의 데이터 보다 삭제할 노드의 데이터가 더 클 떄
 		{
 			back_node = tra;
-			tra = tra->right;
+			tra = tra->rchild;
 		}
 		else if(del_data < tra->data) // 더 작을 떄
 		{
 			back_node = tra;
-			tra = tra->left;
+			tra = tra->lchild;
 		}
 	}
 	if (del_node == NULL)
@@ -79,87 +79,87 @@ void del(int del_data, node** root)  // 삭제
 		printf("값이 없음\n");
 		return;
 	}
-	if (del_node->left == NULL && del_node->right == NULL)  // 삭제할 노드의 왼쪽과 오른쪽이 비어있을 때 -> 리프노드
+	if (del_node->lchild == NULL && del_node->rchild == NULL)  // 삭제할 노드의 왼쪽과 오른쪽이 비어있을 때 -> 리프노드
 	{
-		if (back_node->left == del_node) // 이전 노드의 왼쪽 노드 삭제 할 노드 일떄
+		if (back_node->lchild == del_node) // 이전 노드의 왼쪽 노드 삭제 할 노드 일떄
 		{
-			back_node->left = NULL;
+			back_node->lchild = NULL;
 		}
-		else if (back_node->right == del_node)
+		else if (back_node->rchild == del_node)
 		{
-			back_node->right = NULL;
+			back_node->rchild = NULL;
 		}
 		else if (back_node == NULL)
 		{
 			*root = NULL;
 		}
 	}
-	else if (del_node->left == NULL || del_node->right == NULL)  // 삭제할 노드의 왼쪽 혹은 오른쪽이 비었을 때
+	else if (del_node->lchild == NULL || del_node->rchild == NULL)  // 삭제할 노드의 왼쪽 혹은 오른쪽이 비었을 때
 	{
 		if (back_node == NULL)
 		{
-			if (del_node->left != NULL)
+			if (del_node->lchild != NULL)
 			{
-				*root = del_node->left;
+				*root = del_node->lchild;
 			}
 			else
 			{
-				*root = del_node->right;
+				*root = del_node->rchild;
 			}
 		}
-		else if (del_node->left != NULL) // 오른쪽이 비었을 때
+		else if (del_node->lchild != NULL) // 오른쪽이 비었을 때
 		{
-			if (back_node->left == del_node)
+			if (back_node->lchild == del_node)
 			{
-				back_node->left = del_node->left;
+				back_node->lchild = del_node->lchild;
 			}
 			else
 			{
-				back_node->right = del_node->left;
+				back_node->rchild = del_node->lchild;
 			}
 		}
-		else if (del_node->right != NULL)  // 왼쪽이 비었을 때
+		else if (del_node->rchild != NULL)  // 왼쪽이 비었을 때
 		{
-			if (back_node->right == del_node)
+			if (back_node->rchild == del_node)
 			{
-				back_node->right = del_node->right;
+				back_node->rchild = del_node->rchild;
 			}
 			else
 			{
-				back_node->left = del_node->right;
+				back_node->lchild = del_node->rchild;
 			}
 		}
 	}
 	else  // 삭제할 노드의 왼쪽과 오른쪽의 데이터가 들어있을 때
 	{
-		node* max_node = del_node->left;
+		node* max_node = del_node->lchild;
 		node* max_back_node = del_node;
-		while (max_node->right != NULL)  // 가장 큰 값 찾기
+		while (max_node->rchild != NULL)  // 가장 큰 값 찾기
 		{
 			max_back_node = max_node;
-			max_node = max_node->right;
+			max_node = max_node->rchild;
 		}
 		if (back_node == NULL)
 		{
 			*root = max_node;
 		}
-		else if (back_node->left == del_node)
+		else if (back_node->lchild == del_node)
 		{
-			back_node->left = max_node;
+			back_node->lchild = max_node;
 		}
 		else
 		{
-			back_node->right = max_node;
+			back_node->rchild = max_node;
 		}
 		if (max_back_node == del_node)
 		{
-			max_node->right = del_node->right;
+			max_node->rchild = del_node->rchild;
 		}
 		else
 		{
-			max_back_node->right = max_node->left;
-			max_node->left = del_node->left;
-			max_node->right = del_node->right;
+			max_back_node->rchild = max_node->lchild;
+			max_node->lchild = del_node->lchild;
+			max_node->rchild = del_node->rchild;
 		}
 	}
 	free(del_node);
@@ -175,11 +175,11 @@ node* search(int sr, node* root)  // 탐색
 		}
 		else if (search_node->data > sr)
 		{
-			search_node = search_node->left;
+			search_node = search_node->lchild;
 		}
 		else if (search_node->data < sr)
 		{
-			search_node = search_node->right;
+			search_node = search_node->rchild;
 		}
 	}
 	return search_node;
@@ -205,5 +205,5 @@ int main()
 	{
 		printf("값을 찾을 수 없음\n");
 	}
-	printf("%d %d", root->left->data, root->left->right->data);
+	printf("%d %d", root->lchild->data, root->lchild->rchild->data);
 }

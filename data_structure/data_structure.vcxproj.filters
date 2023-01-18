@@ -57,5 +57,17 @@
     <ClCompile Include="heap.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="바이러스.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="BFS.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="DFSandBFS.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="family_tree.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
